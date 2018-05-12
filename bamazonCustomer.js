@@ -25,7 +25,7 @@ function display() {
     if (err) throw err;
     // console.log(res);
     console.log(
-      "Welcome to Bamazon. Forget your existential despair and buy some stuff."
+      "Welcome to Bamazon. We value you as a customer. God Bless you"
     );
     console.log(
       "-----------------------------------------------------------------------"
@@ -47,13 +47,13 @@ function start() {
       {
         name: "item",
         type: "input",
-        message: "Please enter the id of the Item you would like to purchase."
+        message: "Please enter the id of the Item you would like to purchase?"
       },
 
       {
         name: "quantity",
         type: "input",
-        message: "How many will fill the hole in your heart?"
+        message: "How many would you like to purchase?"
       }
     ])
     .then(function(answer) {
@@ -66,7 +66,7 @@ function start() {
         `select * from products where id =${answer.item}`,
         function(err, res) {
           if (err) throw err;
-          if (res[0].stock > amount) {
+          if (res[0].stock >= amount) {
             var sales=res[0].product_sales+(amount*res[0].price)
             newStock= res[0].stock-amount
             // console.log(res);
@@ -83,13 +83,13 @@ function start() {
               ],
               function(error) {
                 if (error) throw err;
-                console.log("Purchase confirmed");
+                console.log("Purchase confirmed. Have a blessed day.");
                 connection.end();
               }
             );
           } else {
             // console.log(res);
-            console.log("Not enough in stock");
+            console.log("Sorry not enough in stock but please remember life itself is still a blessing");
             start();
           }
         }

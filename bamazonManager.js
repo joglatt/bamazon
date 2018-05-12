@@ -106,7 +106,7 @@ function addInventory() {
         message: "How much inventory are you adding?"
       }
     ])
-    .then(function(answer) {
+    .then(answer => {
       var item = answer.item;
       var amount = answer.quantity;
       var newStock;
@@ -141,6 +141,7 @@ function addInventory() {
         }
       );
     });
+  start();
 }
 
 function addItem() {
@@ -188,4 +189,5 @@ function addItem() {
         }
       );
     });
+  start();
 }
