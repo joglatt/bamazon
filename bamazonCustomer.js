@@ -40,7 +40,7 @@ function display() {
     start();
   });
 }
-
+//displays interface allowing user to purchase item
 function start() {
   inquirer
     .prompt([

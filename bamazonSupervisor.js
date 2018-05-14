@@ -9,7 +9,7 @@ var connection = mysql.createConnection({
   password: process.env.pass,
   database: "bamazon"
 });
-
+//displays menu
 function init() {
   inquirer
     .prompt([
@@ -39,7 +39,7 @@ function init() {
       }
     });
 }
-
+//displays product sales grouped by department
 function sales() {
   connection.query(
     "SELECT dept, dept_id, overhead, (SUM(product_sales) - overhead )AS profit FROM products LEFT JOIN depts ON products.department=depts.dept GROUP BY department ",
@@ -53,10 +53,11 @@ function sales() {
           }  PROFIT:$${res[i].profit}`
         );
       }
+      init();
     }
   );
-  init();
 }
+////allows user to add a department
 function addDept() {
   console.log("Department Creation Screen. Lucifer is Bringer of Light.");
   inquirer
@@ -88,11 +89,8 @@ function addDept() {
           );
         }
       );
+      init();
     });
-    init();
 }
-
+//calls init function to display the menu
 init();
-
-// Works to get sums of total sales by department in products table
-//     "SELECT SUM(product_sales) AS total_profit,department FROM products LEFT JOIN depts ON products.department=depts.dept GROUP BY department ",

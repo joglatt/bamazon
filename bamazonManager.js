@@ -9,7 +9,7 @@ var connection = mysql.createConnection({
   password: process.env.pass,
   database: "bamazon"
 });
-
+//initates menu and runs function based on user selection
 function start() {
   inquirer
     .prompt([
@@ -48,7 +48,7 @@ function start() {
     });
 }
 start();
-
+//displays all the available products
 function display() {
   connection.query("select * from products", function(err, res) {
     if (err) throw err;
@@ -67,7 +67,7 @@ function display() {
     start();
   });
 }
-
+//dispalys all productys with inventory under 50
 function lowInventory() {
   connection.query("select * from products where stock < 50", function(
     err,
@@ -83,21 +83,20 @@ function lowInventory() {
       console.log(
         `ITEM ID:${res[i].id}  ITEM NAME:${res[i].item}  DEPARTMENT:${
           res[i].department
-        }  PRICE:$${res[i].price}`
+        }  PRICE:$${res[i].price}  STOCK:${res[i].stock}`
       );
     }
     start();
   });
 }
-
+//adds inventory to an existing item on the products table
 function addInventory() {
   inquirer
     .prompt([
       {
         name: "item",
         type: "input",
-        message:
-          "Please enter the id of the Item you want to add inventory for."
+        message: "Please enter the id of the Item requiring inventory"
       },
 
       {
@@ -110,40 +109,34 @@ function addInventory() {
       var item = answer.item;
       var amount = answer.quantity;
       var newStock;
-      connection.query(
-        `select * from products where id =${answer.item}`,
-        function(err, res) {
-          if (err) throw err;
-          if (res[0].stock > amount) {
-            newStock = res[0] + amount;
-            // console.log(res);
-            connection.query(
-              "UPDATE products SET ? WHERE ?",
-              [
-                {
-                  quantity: newStock
-                },
-                {
-                  id: item
-                }
-              ],
-              function(error) {
-                if (error) throw err;
-                console.log(res[0] + " inventory updated!\n");
-                start();
-              }
-            );
-          } else {
-            // console.log(res);
-            console.log("Not enough in stock");
+      connection.query(`select * from products where id =${item}`, function(
+        err,
+        res
+      ) {
+        if (err) throw err;
+        newStock = res[0].stock + amount;
+
+        connection.query(
+          "UPDATE products SET ? WHERE ?",
+          [
+            {
+              stock: newStock
+            },
+            {
+              id: item
+            }
+          ],
+          function(err, res) {
+            if (err) throw err;
+            console.log(" inventory updated!\n");
+
             start();
           }
-        }
-      );
+        );
+      });
     });
-  start();
 }
-
+//adds item to products table
 function addItem() {
   console.log("Item Creation Screen. Satan be with you.");
   inquirer
@@ -188,6 +181,6 @@ function addItem() {
           console.log("Item successfully created");
         }
       );
+      start();
     });
-  start();
 }

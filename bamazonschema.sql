@@ -24,9 +24,3 @@ CREATE TABLE depts(
   PRIMARY KEY (dept_id)
 );
 
-
-
--- Select products.department, sum (product_sales) as total_money from product_sales
--- LEFT JOIN products on departments.dept = products.department
-    -- "Select SUM(product_sales),department AS total_money FROM products LEFT JOIN products ON departments.dept = products.department;",
-
